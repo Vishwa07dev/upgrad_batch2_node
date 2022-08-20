@@ -1,0 +1,22 @@
+{
+  "name": "upgrad_batch2_node",
+  "version": "1.0.0",
+  "description": "This is the first node.js project for all of us in this class",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Vishwa07dev/upgrad_batch2_node.git"
+  },
+  "author": "vimohan",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Vishwa07dev/upgrad_batch2_node/issues"
+  },
+  "homepage": "https://github.com/Vishwa07dev/upgrad_batch2_node#readme",
+  "dependencies": {
+    "express": "^4.18.1"
+  }
+}
