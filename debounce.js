@@ -1,15 +1,3 @@
-/**function debounce(cb, to) {
-    let timer ;
-    return (...args)=>{
-        clearTimeout(timer);
-        timer = setTimeout(()=>{
-         cb.apply(this,args);
-        }, to);
-    }
-
-} **/
-
-
 function debounce(cb, to) {
     let timer ; //previous timerId
     return ()=>{
