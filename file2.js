@@ -8,7 +8,8 @@ console.log(mult);
 
 **/
 
-const add = require("./file1");
-console.log(typeof add);
+const operators = require("./file1");
+console.log(typeof operators);
+console.log(operators);
 
-console.log(add(5,6));
+console.log(operators.add(5,6));

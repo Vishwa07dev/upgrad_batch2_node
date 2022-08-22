@@ -3,8 +3,12 @@
  * Function to add two numbers
  *  
  */
-const add = (a,b) =>{
+exports.add = (a,b) =>{
     return a+b ;
+}
+
+exports.mul = (a,b)=> {
+    return a*b ;
 }
 /** 
 exports.mul = (a, b) =>{
@@ -25,7 +29,11 @@ module.exports = {
 }
 
 **/
-
-module.exports = add ;
+/**
+module.exports = {
+    add : add ,
+    mul : mul
+}
+**/
 
 
