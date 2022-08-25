@@ -99,12 +99,39 @@ app.post("/mba/v1/movies", (req, res)=>{
 
 
 /**
- * I want implement an API to update an existing movies
+ * I want to implement an API to update an existing movies
  * 
  * PUT 127.0.0.1:7777/mba/v1/movies/3
  * 
  * Request body
  */
+app.put("/mba/v1/movies/:id", (req, res)=>{
+
+  // Check if the movie with the given id is present or not
+
+  const moviedId = req.params.id;
+
+  const movie = movies[moviedId];
+
+  if(movie){
+
+     //Existing movie has to be updated from the content in the req body
+
+     const reqBody = req.body ;
+     movie.name = reqBody.name != undefined ? reqBody.name : movie.name ;
+     movie.status = reqBody.status !=undefined ? reqBody.status : movie.status;
+     movie.actor = reqBody.actor != undefined ? reqBody.actor : movie.actor;
+    
+     res.status(200).send(movie);
+
+  }else{
+      res.status(400).send({
+          message : "Movie id passed is not correct"
+      });
+  }
+
+
+})
 
 
 
