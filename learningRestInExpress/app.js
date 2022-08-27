@@ -7,6 +7,43 @@
 const express = require("express");
 const app = express();
 
+
+function firstMW(req, res , next ){
+    console.log("Inside the first middleware");
+    next(); // Pass the controll to the next
+}
+
+function secondMW(req, res , next ){
+    console.log("Inside the second middleware");
+    next(); // Pass the controll to the next
+}
+
+function thirdMW(req, res , next ){
+    console.log("Inside the third middleware");
+    next(); // Pass the controll to the next
+}
+
+
+/**
+ * I want to acheive middleware chaining
+ * thirdMW -> firstMW -> secondMW -> express.json()
+ */
+app.use(thirdMW);
+app.use(firstMW);
+app.use(secondMW);
+
+/**
+ * Using a native middleware
+ */
+app.use(express.json());
+
+
+
+function routeMW(req, res, next){
+    console.log("Only inside a specific URI");
+    next();
+}
+
 let id = 3;
 
 const movies = {
@@ -35,8 +72,16 @@ const movies = {
  * 
  * Return the list of movies present in the system
  */
-
+app.get("/vehicles/v1/cars" , (req,res)=>{
+    res.status(200).send({
+        message : "Hello from Cars"
+    });
+});
+app.use("/mba/v1/movies" , routeMW );
 app.get("/mba/v1/movies", (req, res) => {
+
+
+    console.log("Query param " ,  req.query);
 
     console.log("Param object ", req.params);
     /**
@@ -80,7 +125,7 @@ app.get("/mba/v1/movies/:id", (req, res) => {
  * 
  * Request body should be passed
  */
-app.use(express.json());
+
 app.post("/mba/v1/movies", (req, res)=>{
    
    // I need to first read the request body
