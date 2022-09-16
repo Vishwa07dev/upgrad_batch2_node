@@ -38,6 +38,8 @@ mongoose.connect("mongodb://127.0.0.1/upgradbatch2db", ()=>{
    /**
     * Async Await
     */
+
+   /** 
     const instituteCreated = await Institute.create({
         name : "XYZ",
         coursesCount : 10,
@@ -54,8 +56,38 @@ mongoose.connect("mongodb://127.0.0.1/upgradbatch2db", ()=>{
            country : "India",
            pinCode : 560049 
         },
-        institute : instituteCreated._id
+        institute : instituteCreated._id,
+        subjects : ["Maths"]
     });
 
-   console.log(student); 
+   console.log(student);
+   
+   /**
+    *   I want to get the list of all the existing students 
+    */
+   /** 
+   const students = await Student.find();
+
+   console.log(students) ;  **/
+
+   // Search student based on the id
+   const student = await Student.findOne({_id : "6320bfd7ed37d503accd1ad2"});
+
+   console.log(student);
+
+   // I want to update the record
+
+   student.name = "Vishwa_Updated";
+   student.subjects = ["Maths"];
+   await student.save();
+
+   const sameStudent = await Student.findOne({_id : "6320bfd7ed37d503accd1ad2"});
+   console.log(sameStudent);
+
+
+   // I want delete a document
+   const deletedStudent  = await Student.deleteOne({_id : "6320bfd7ed37d503accd1ad2"});
+
+   console.log(deletedStudent);
+
 }
