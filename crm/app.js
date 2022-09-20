@@ -12,6 +12,13 @@ const constants = require("./utils/constants");
 const bcrypt = require("bcryptjs");
 
 /**
+ * Register the MW to read the JSON request body
+ */
+app.use(express.json());
+
+// app.use(bodyParser.json());
+
+/**
  * Create a mongodb connection and create some dummy data
  * 
  * ADMIN user should be created from the backend
@@ -64,7 +71,10 @@ async function init() {
     }
 }
 
-
+/**
+ * Plug in the routes
+ */
+require("./routes/auth.routes")(app);
 
 /**
  * Start the server
