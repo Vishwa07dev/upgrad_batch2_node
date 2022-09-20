@@ -3,6 +3,7 @@
  */
 
 const mongoose = require('mongoose');
+const constants = require("../utils/constants")
 
 //Create schema
 const userSchema = new mongoose.Schema({
@@ -29,14 +30,14 @@ const userSchema = new mongoose.Schema({
     userType: {
         type: String,
         required: true,
-        default: "CUSTOMER",
-        enum: ["CUSTOMER", "ADMIN", "ENGINEER"]
+        default: constants.userTypes.customer,
+        enum: [constants.userTypes.customer, constants.userTypes.admin, constants.userTypes.engineer]
     },
     userStatus: {
         type: String,
         required: true,
-        default: "APPROVED",
-        enum: ["APPROVED", "PENDING", "REJECTED"]
+        default: constants.userStatuses.approved,
+        enum: [constants.userStatuses.approved, constants.userStatuses.pending,constants.userStatuses.rejected ]
     },
     /**createdAt : {
         type : Date,
@@ -47,3 +48,5 @@ const userSchema = new mongoose.Schema({
 
     }**/
 }, { timestamps: true, versionKey: false });
+
+module.exports = mongoose.model("User", userSchema);
