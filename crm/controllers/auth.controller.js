@@ -5,6 +5,8 @@
 const constants = require('../utils/constants');
 const bcrypt = require("bcryptjs");
 const User = require("../models/user.model");
+const jwt = require("jsonwebtoken");
+const authSecret = require("../configs/auth.config");
 
 /**
  * Write the logic to register a user
@@ -52,3 +54,67 @@ exports.signup = async (req, res) => {
         })
     }
 }
+
+
+/**
+ * Controller for signin
+ * 
+ * In the case of successfull login, it should go and
+ * return access token
+ */
+
+exports.signin = async (req, res) =>{
+
+    /**
+     * Read the request body
+     */
+
+
+    /**
+     * Load the user and check if the user is approved
+     */
+    const user = await User.findOne({userId : req.body.userId});
+
+    if(!user){
+        return res.status(400).send({
+            message : "User id passed is incorrect, no user exists"
+        })
+    }
+
+    if(user.userStatus != constants.userStatuses.approved){
+        return res.status(400).send({
+            message : "Can't allow the login as the user is in the pending state"
+        })
+    }
+    /**
+     * Verify if the password is correct
+     */
+    const isPasswordValid = bcrypt.compareSync(req.body.password, user.password);
+
+    if(!isPasswordValid){
+        return res.status(400).send({
+            "message" : "Password provided is incorrect"
+        })
+    }
+
+    /**
+     * Generate the token
+     */
+
+    const token = jwt.sign({id : user.userId},authSecret.secret, {
+        expiresIn : 120
+    });
+
+    /**
+     * Return the response
+     */
+    return res.status(200).send({
+        name : user.name,
+        userId : user.userId,
+        email : user.email,
+        userType : user.userType,
+        userStatus : user.userStatus,
+        accessToken : token
+    })
+
+};
