@@ -1,15 +1,35 @@
-
+const User = require("../models/user.model");
 
 /**
  * Find all users details - This shoudl be allowed only for the admin
  */
-exports.findAllUsers = (req, res)=>{
-    
+exports.findAllUsers = async (req, res) => {
+
     // Fetch the data from the DB
+    try {
+        const users = await User.find();
 
-     // Remove the private data in these documents
+        if (!users) {
+            return res.status(400).send({
+                message: "No records found"
+            })
+        }
 
-     // Return all the users
+        // Remove the private data in these documents
+
+        //TODO : BUG - Password is not getting removed. Fix this !!!
+
+        const result  = users.map(user => delete user.password)
+
+        console.log(users);
+        console.log(result);
+
+        // Return all the users
+        res.status(200).send(users);
+    } catch (err) {
+        console.log("Error while fetching all the users ", err.message);
+    }
+
 }
 
 
@@ -20,4 +40,10 @@ exports.findAllUsers = (req, res)=>{
 
 /**
  * Update a user
+ * 
+ * TODO :
+ * 
+ * As a ADMIN user, I should be able to update the status of the user
+ * 
+ * Time till 11:25 PM 
  */
