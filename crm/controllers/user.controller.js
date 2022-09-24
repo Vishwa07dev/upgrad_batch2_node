@@ -1,3 +1,4 @@
+const { findOneAndUpdate } = require("../models/user.model");
 const User = require("../models/user.model");
 
 /**
@@ -47,3 +48,12 @@ exports.findAllUsers = async (req, res) => {
  * 
  * Time till 11:25 PM 
  */
+exports.updateAnUser = async (req, res) => {
+    try {
+        const user = await User.findOneAndUpdate({userId : req.userId}, {$set : {userStatus : "APPROVED"}});
+        user.save();
+        return res.status(200).send(user);
+    } catch (err) {
+        console.log("Error while updating user", err.message);
+    }
+}
