@@ -47,3 +47,26 @@ exports.findAllUsers = async (req, res) => {
  * 
  * Time till 11:25 PM 
  */
+
+exports.update = async (req, res) =>{
+
+    const userIdReq = req.params.userId ;
+
+    //Validation of the userIdReq should have been done in the MW itself
+    // TODO : Add the above MW as the enhancement to this project
+    
+    //Find the user I need to update
+    const user = await User.findOne({userId : userIdReq});
+
+    
+    //Update the user object based on the request body
+    user.userStatus = req.body.userStatus != undefined ? req.body.userStatus : user.userStatus ;
+
+    user.userType = req.body.userType != undefined ? req.body.userType : user.userType;
+
+    await user.save();
+
+    res.status(200).send({
+        message : "User got successfully saved"
+    })
+}
