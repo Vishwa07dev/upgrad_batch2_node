@@ -87,8 +87,18 @@ exports.updateTicket = async (req, res) => {
  *   3. Customers  -> Get tickets created by me  
  */
 
-exports.getAllTickets = async (req, res) => {
-
-
-
+ exports.getAllTickets = async (req, res) => {
+    try {
+        var tickets = [];
+        if(req.userType == constants.userTypes.admin) {
+            tickets = await Ticket.find();
+        } else if (req.userType == constants.userTypes.engineer) {
+            tickets = await Ticket.find({$or : [{userId : req.userId},{assignee : req.userId}]});
+        } else {
+            tickets = await Ticket.find({userId : req.userId});
+        }
+        return res.status(200).send(tickets);
+    } catch (err) {
+        console.log("Error while fetching tickets", err.message);
+    }
 }
