@@ -87,18 +87,31 @@ exports.updateTicket = async (req, res) => {
  *   3. Customers  -> Get tickets created by me  
  */
 
- exports.getAllTickets = async (req, res) => {
+exports.getAllTickets = async (req, res) => {
     try {
         var tickets = [];
-        if(req.userType == constants.userTypes.admin) {
-            tickets = await Ticket.find();
+        let queryObj = {};
+        if (req.userType == constants.userTypes.admin) {
+
         } else if (req.userType == constants.userTypes.engineer) {
-            tickets = await Ticket.find({$or : [{userId : req.userId},{assignee : req.userId}]});
+            queryObj = { $or: [{ reporter: req.userId }, { assignee: req.userId }] };
         } else {
-            tickets = await Ticket.find({userId : req.userId});
+            queryObj = { reporter: req.userId };
         }
+
+        const tickets = await Ticket.find(queryObj);
+
         return res.status(200).send(tickets);
     } catch (err) {
         console.log("Error while fetching tickets", err.message);
     }
+}
+
+/**
+ * Get the ticket based on the id
+ */
+exports.getOneTicket = async (req, res) => {
+    
+    const ticket = await Ticket.findOne({_id: req.params.id});
+    res.status(200).send(ticket);
 }
