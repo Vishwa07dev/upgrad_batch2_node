@@ -3,10 +3,19 @@ const constants = require("../utils/constants")
 
 
 exports.newNotification = async (req, res) => {
+  console.log(typeof req.body.recepientEmails);
+
+  const emails = [];
+
+  for (let key in req.body.recepientEmails){
+      console.log(req.body.recepientEmails[key]);
+      emails.push(req.body.recepientEmails[key]);
+  }
+  console.log(emails);
   const notificationObj = {
     subject: req.body.subject,
     content: req.body.content,
-    recepientEmails: req.body.recepientEmails,
+    recepientEmails: emails,
     sentStatus: constants.sentStatusTypes.unsent,
     requester: req.body.requester
   }
@@ -14,16 +23,12 @@ exports.newNotification = async (req, res) => {
   // store ticket data to DB
   try {
     const notificationCreated = await Notification.create(notificationObj)
-
+    console.log("after creating ", notificationCreated);
     // return response
     const notificationResp = {
-      subject: notificationCreated.subject,
-      content: notificationCreated.content,
-      recepientEmails: notificationCreated.recepientEmails,
-      sentStatus: notificationCreated.sentStatus,
-      requester: notificationCreated.requester
+      trackingId : notificationCreated._id
     }
-    res.status(201).json(notificationResp)
+    return res.status(201).send(notificationResp)
 
   } catch (error) {
     console.log("Error while creating a new notification", error.message);

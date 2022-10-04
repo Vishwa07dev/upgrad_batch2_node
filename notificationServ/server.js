@@ -4,6 +4,7 @@
 const express = require("express")
 const serverConfig = require("./configs/server.config")
 const dbConfig = require("./configs/db.config")
+const mongoose = require("mongoose");
 
 mongoose.connect(dbConfig.DB_URL)
 
@@ -21,7 +22,12 @@ db.once("open", () => {
 const app = express()
 app.use(express.json())
 
-require("./routes/notifications.routes")(app)
+require("./routes/notification.routes")(app);
+
+/**
+ * Initialize the cron
+ */
+require('./crons/cron');
 
 app.listen(serverConfig.PORT, () => {
   console.log(`Listenting for request on ${serverConfig.PORT}`);
