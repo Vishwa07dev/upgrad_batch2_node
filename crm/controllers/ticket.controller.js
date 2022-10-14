@@ -43,7 +43,7 @@ exports.createTicket = async (req, res) => {
         userId : req.userId
     })
     // I should send the ticket creation notification request
-    sendNotificationRequest(`Ticket created with id ${ticketCreated._id}`,"Please look into the ticket",user.email+","+eng.email, "CRM");
+    sendNotificationRequest(`Ticket created with id ${ticketCreated._id}`,"Please look into the ticket",[ user.email,eng.email ], "CRM");
 
     //Return the response
 
