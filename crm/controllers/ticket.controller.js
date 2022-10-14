@@ -2,6 +2,7 @@
 const Ticket = require("../models/ticket.model");
 const User = require("../models/user.model");
 const constants = require("../utils/constants");
+const sendNotificationRequest  = require("../utils/notificationClient");
 
 /**
  * Write a controller method to create the ticket
@@ -37,6 +38,12 @@ exports.createTicket = async (req, res) => {
     //Save it
 
     const ticketCreated = await Ticket.create(ticketObj);
+    
+    const user = await User.findOne({
+        userId : req.userId
+    })
+    // I should send the ticket creation notification request
+    sendNotificationRequest(`Ticket created with id ${ticketCreated._id}`,"Please look into the ticket",user.email+","+eng.email, "CRM");
 
     //Return the response
 
@@ -89,7 +96,6 @@ exports.updateTicket = async (req, res) => {
 
 exports.getAllTickets = async (req, res) => {
     try {
-        var tickets = [];
         let queryObj = {};
         if (req.userType == constants.userTypes.admin) {
 
