@@ -61,7 +61,9 @@ exports.createTicket = async (req, res) => {
  * 
  * This should be done in the layer of MW 
  * 
- * TODO | Write the code to do this validation 
+ * TODO | Write the code to do this validation
+ * 
+ * TODO | Add the same logic while updating the ticket 
  */
 
 exports.updateTicket = async (req, res) => {
